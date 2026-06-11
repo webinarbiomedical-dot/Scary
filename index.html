@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CHAOS.EXE</title>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    background:black;
+    color:white;
+    font-family:Comic Sans MS;
+    text-align:center;
+}
+
+h1{
+    margin-top:50px;
+    font-size:4rem;
+    animation:shake .2s infinite;
+}
+
+@keyframes shake{
+    0%{transform:translate(2px,2px);}
+    25%{transform:translate(-2px,2px);}
+    50%{transform:translate(2px,-2px);}
+    75%{transform:translate(-2px,-2px);}
+}
+
+button{
+    padding:15px 25px;
+    font-size:20px;
+    border:none;
+    border-radius:15px;
+    cursor:pointer;
+}
+
+#escapeBtn{
+    position:absolute;
+    left:45%;
+    top:45%;
+}
+
+#dontClick{
+    margin-top:40px;
+    background:red;
+    color:white;
+}
+
+.popup{
+    position:absolute;
+    background:white;
+    color:black;
+    padding:15px;
+    border:3px solid black;
+    border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>CHAOS.EXE</h1>
+
+<p>Nothing on this website is under control.</p>
+
+<button id="escapeBtn">Catch Me 😈</button>
+
+<br><br>
+
+<button id="dontClick">DO NOT CLICK</button>
+
+<script>
+
+const escapeBtn = document.getElementById("escapeBtn");
+
+escapeBtn.addEventListener("mouseover",()=>{
+
+    let x=Math.random()*(window.innerWidth-200);
+    let y=Math.random()*(window.innerHeight-100);
+
+    escapeBtn.style.left=x+"px";
+    escapeBtn.style.top=y+"px";
+
+    beep();
+});
+
+document.getElementById("dontClick").onclick=()=>{
+
+    const messages=[
+        "ERROR: Brain.exe stopped working",
+        "WARNING: Too much chaos detected",
+        "FBI has been notified",
+        "Your fridge is running",
+        "A duck is judging you",
+        "System compromised by frogs"
+    ];
+
+    createPopup(messages[Math.floor(Math.random()*messages.length)]);
+
+    document.body.style.background=
+    `hsl(${Math.random()*360},100%,50%)`;
+
+    beep();
+};
+
+function createPopup(text){
+
+    const div=document.createElement("div");
+
+    div.className="popup";
+    div.innerHTML=text;
+
+    div.style.left=Math.random()*80+"%";
+    div.style.top=Math.random()*80+"%";
+
+    document.body.appendChild(div);
+
+    setTimeout(()=>{
+        div.remove();
+    },3000);
+}
+
+function beep(){
+
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+
+    const osc=ctx.createOscillator();
+
+    osc.type="square";
+    osc.frequency.value=300+Math.random()*800;
+
+    osc.connect(ctx.destination);
+
+    osc.start();
+
+    osc.stop(ctx.currentTime+0.1);
+}
+
+let clicks=0;
+
+document.body.addEventListener("click",()=>{
+
+    clicks++;
+
+    if(clicks===10){
+
+        document.body.innerHTML=`
+        <h1>🐸 FROG MODE ACTIVATED 🐸</h1>
+        <h2>The frogs have taken control.</h2>
+        <h1>🐸🐸🐸🐸🐸</h1>
+        `;
+    }
+});
+
+setInterval(()=>{
+
+    if(Math.random()>0.8){
+
+        createPopup("Random Chaos Event #" +
+        Math.floor(Math.random()*9999));
+
+    }
+
+},2000);
+
+</script>
+
+</body>
+</html>
